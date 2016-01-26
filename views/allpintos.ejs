@@ -74,8 +74,8 @@
 										<% } %>
 									</div>
 									<div class="likes-div">
-										
-										<% if (docs[i].poster === username || !user) { %>
+
+										<% if (docs[i].poster === username) { %>
 											<span><span class="likes-amount"><%= docs[i].likes %></span> <i class="glyphicon glyphicon-chevron-up"></i></span>&nbsp;
 										
 										<% } else if (docs[i].likedBy.indexOf(username) === -1) { %>
@@ -86,7 +86,7 @@
 										<% } %>
 
 										
-										<% if (docs[i].poster === username || !user) { %>
+										<% if (docs[i].poster === username) { %>
 											<span><span class="reposts-amount"><%= docs[i].reposts %> </span><i class="fa fa-repeat"></i></span>
 										
 										<% } else if (docs[i].repostedBy.indexOf(username) === -1) { %>
