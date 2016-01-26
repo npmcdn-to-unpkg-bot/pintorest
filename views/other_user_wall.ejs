@@ -71,10 +71,16 @@
 									</div>
 									<div class="likes-div">
 										
-										<!-- if req user is not pinto poster or hasnt liked the pinto yet then he can like -->
-										<% if (docs[i].poster === username || !user) { %>
+										
+										<% if (docs[i].poster === username) { %>
 											<span><span class="likes-amount"><%= docs[i].likes %></span> <i class="glyphicon glyphicon-chevron-up"></i></span>&nbsp;
 										
+										<% } else if (!user) { %>
+											<span>
+												<span class="likes-amount"><%= docs[i].likes %></span> 
+												<a href="/login"><i class="glyphicon glyphicon-chevron-up"></i></a>
+											</span>&nbsp;
+
 										<% } else if (docs[i].likedBy.indexOf(username) === -1) { %>
 											<span><span class="likes-amount"><%= docs[i].likes %></span> <i class="likes not-liked glyphicon glyphicon-chevron-up"></i></span>&nbsp;
 										
@@ -83,9 +89,15 @@
 										<% } %>
 
 										
-										<!-- if req user is not pinto poster or hasnt reposted the pinto yet then he can repost -->
-										<% if (docs[i].poster === username || !user) { %>
+										
+										<% if (docs[i].poster === username) { %>
 											<span><span class="reposts-amount"><%= docs[i].reposts %> </span><i class="fa fa-repeat"></i></span>
+
+										<% } else if (!user) { %>
+											<span>
+												<span class="reposts-amount"><%= docs[i].reposts %> </span>
+												<a href="/login"><i class="fa fa-repeat"></i></a>
+											</span>
 										
 										<% } else if (docs[i].repostedBy.indexOf(username) === -1) { %>
 											<span><span class="reposts-amount"><%= docs[i].reposts %> </span><i class="reposts not-reposted fa fa-repeat"></i></span>
