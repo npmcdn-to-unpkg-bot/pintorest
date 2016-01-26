@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script type="text/javascript" src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
+		<meta charset="utf-8">
+		<title>My Pintos - Pintorest</title>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+        <link href='https://fonts.googleapis.com/css?family=EB+Garamond' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" type="text/css" href="css/main.css">
+	</head>
+
+
+	<body>
+
+		<!-- navbar -->
+		<nav class="navbar navbar-default navbar-fixed-top">
+			<div class="container">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#example">
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" href="/">Pintorest</a>
+				</div>
+				<div class="collapse navbar-collapse" id="example">
+					<ul class="nav navbar-nav">
+						<li><a href="/allpintos">All Pintos</a></li>
+					</ul>
+					<ul class="nav navbar-nav navbar-right">
+						<li class="active"><a href="/mypintos">My Pintos</a></li>
+						<li><a href="/profile"><%= user.local.username || user.twitter.username %></a></li>
+						<li><a href="/logout">Sign Out</a></li> 
+					</ul>
+				</div>
+			</div>
+		</nav>  <!-- end navbar -->
+
+
+		<!-- add pinto modal -->
+		<div class="modal fade" id="myModal"> <!-- modal -->
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h2 class="modal-title">New Pinto</h2>
+					</div>
+					<div class="modal-body">
+						<form action="" method="" role="form" id="myForm">
+					        <div class="form-group">
+					            <label>URL</label>
+					            <input type="text" class="form-control" name="pintoUrl" id="pinto-url" placeholder="Link to url" required>
+					        </div>
+					        <div class="form-group">
+					            <label>Title</label>
+					            <input type="text" class="form-control" name="pintoTitle" id="pinto-title" placeholder="Name.." required>
+					        </div>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button type="submit" form="myForm" class="btn btn-md btn-primary">Add</button>
+						<button type="button" class="btn btn-md btn-default" data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- delete pinto modal -->
+		<div class="modal" id="delete-confirm"> <!-- modal -->
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h2 class="modal-title">Remove</h2>
+					</div>
+					<div class="modal-body">
+						<h3></h3>
+						<p>This action cannot be undone.</p>
+						<p>Clicking confirm will permanently delete this Pinto.</p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-md btn-danger confirm-removal">Confirm</button>
+						<button type="button" class="btn btn-md btn-primary" data-dismiss="modal">Cancel</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		
+		<!-- header -->
+		<div class="white-space-header"> 
+			<div class="container-fluid">
+				<div class="well text-center">
+					<h1># your pintos</h1>
+					<button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#myModal">New Pinto</button>
+				</div>
+				<hr>
+			</div> 
+		</div>
+
+		
+		<!-- masonry grid -->
+		<div class="container-fluid">
+			<div class="grid">
+				<% if (docs.length) { %>
+					<% for (var i = 0; i < docs.length; i++) { %>
+						<div class="grid-item col-md-4 col-lg-2" data-id="<%= docs[i]._id %>">
+							<img src="<%= docs[i].imgUrl %>">
+							<div class="wrapper">
+								<h4><%= docs[i].name %></h4>
+								<div>
+									<div class="poster-div">
+										<% if (docs[i].poster === username) { %>
+											<span class="remove-pinto">remove</span>
+										<% } else { %>
+											<span>
+												<a href="/users/<%= docs[i].poster %>"><%= docs[i].poster %></a>
+											</span>
+										<% } %>
+									</div>
+									<div class="likes-div">
+										<% if (docs[i].poster === username) { %> 
+											<span><span class="likes-amount"><%= docs[i].likes %></span> <i class="glyphicon glyphicon-chevron-up"></i></span>&nbsp;
+											<span><span class="reposts-amount"><%= docs[i].reposts %> </span><i class="fa fa-repeat"></i></span>
+										<% } else { %>
+											<% if (docs[i].likedBy.indexOf(username) === -1) { %>
+												<span><span class="likes-amount"><%= docs[i].likes %></span> <i class="glyphicon glyphicon-chevron-up"></i></span>&nbsp;
+											<% } else { %>
+												<span><span class="likes-amount"><%= docs[i].likes %></span> <i class="likes not-liked glyphicon glyphicon-chevron-up"></i></span>&nbsp;
+											<% } %>
+											<span><span class="reposts-amount"><%= docs[i].reposts %> </span><i class="reposts reposted fa fa-repeat"></i></span>
+										<% } %>
+									</div>
+								</div>
+							</div>
+						</div>
+					<% } %>
+				<% } else { %> 
+					<h2>Oops! Looks like you have no Pintos.</h2> <!-- need to fix this later -->
+					<a href="#myModal" data-toggle="modal"><h3>Add a new?</h3></a>
+				<% } %>
+			</div>
+		</div>
+
+		
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+		<script src="https://npmcdn.com/imagesloaded@4.1/imagesloaded.pkgd.min.js"></script>
+		<script src="https://npmcdn.com/masonry-layout@4.0/dist/masonry.pkgd.min.js"></script>
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+		<script type="text/javascript" src="javascript/my_pintos.js"></script>
+		<script type="text/javascript" src="javascript/like_a_pinto.js"></script>
+		<script type="text/javascript" src="javascript/repost_a_pinto.js"></script>
+	</body>
+</html>

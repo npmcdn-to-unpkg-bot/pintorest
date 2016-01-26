@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script type="text/javascript" src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
+		<meta charset="utf-8">
+		<title>My Pintos - Pintorest</title>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+        <link href='https://fonts.googleapis.com/css?family=EB+Garamond' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" type="text/css" href="../css/main.css">
+	</head>
+
+
+	<body>
+
+		<!-- navbar -->
+		<nav class="navbar navbar-default navbar-fixed-top">
+			<div class="container">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#example">
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" href="/">Pintorest</a>
+				</div>
+				<div class="collapse navbar-collapse" id="example">
+					<ul class="nav navbar-nav">
+						<li class="active"><a href="/allpintos">All Pintos</a></li>
+					</ul>
+					<ul class="nav navbar-nav navbar-right">
+						<% if (user) { %>
+							<li><a href="/mypintos">My Pintos</a></li>
+							<li><a href="#"><%= user.local.username || user.twitter.username %></a></li>
+							<li><a href="/logout">Sign Out</a></li> 
+						<% } else { %>
+							<li><a href="/login">Login</a></li>
+							<li><a href="/signup">Sign Up</a></li> 
+						<% } %>
+					</ul>
+				</div>
+			</div>
+		</nav>  <!-- end navbar -->
+
+	
+		<!-- header -->
+		<div class="white-space-header"> 
+			<div class="container-fluid">
+				<div class="well text-center">
+					<h1># <%= wallOwner + "'s" %> pintos</h1>
+				</div>
+				<hr>
+			</div> 
+		</div>
+
+		
+		<!-- masonry grid -->
+		<div class="container-fluid">
+			<div class="grid">
+				<% if (docs.length) { %>
+					<% for (var i = 0; i < docs.length; i++) { %>
+						<div class="grid-item col-md-3 col-lg-2" data-id="<%= docs[i]._id %>">
+							<img src="<%= docs[i].imgUrl %>">
+							<div class="wrapper">
+								<h4><%= docs[i].name %></h4>
+								<div>
+									<div class="poster-div">
+										<span class="pinto-poster">
+											<a href="/users/<%= docs[i].poster %>"><%= docs[i].poster %></a>
+										</span>
+									</div>
+									<div class="likes-div">
+										
+										<!-- if req user is not pinto poster or hasnt liked the pinto yet then he can like -->
+										<% if (docs[i].poster === username || !user) { %>
+											<span><span class="likes-amount"><%= docs[i].likes %></span> <i class="glyphicon glyphicon-chevron-up"></i></span>&nbsp;
+										
+										<% } else if (docs[i].likedBy.indexOf(username) === -1) { %>
+											<span><span class="likes-amount"><%= docs[i].likes %></span> <i class="likes not-liked glyphicon glyphicon-chevron-up"></i></span>&nbsp;
+										
+										<% } else { %>
+											<span><span class="likes-amount"><%= docs[i].likes %></span> <i class="likes liked glyphicon glyphicon-chevron-up"></i></span>&nbsp;
+										<% } %>
+
+										
+										<!-- if req user is not pinto poster or hasnt reposted the pinto yet then he can repost -->
+										<% if (docs[i].poster === username || !user) { %>
+											<span><span class="reposts-amount"><%= docs[i].reposts %> </span><i class="fa fa-repeat"></i></span>
+										
+										<% } else if (docs[i].repostedBy.indexOf(username) === -1) { %>
+											<span><span class="reposts-amount"><%= docs[i].reposts %> </span><i class="reposts not-reposted fa fa-repeat"></i></span>
+
+										<% } else { %>
+											<span><span class="reposts-amount"><%= docs[i].reposts %> </span><i class="reposts reposted fa fa-repeat"></i></span>
+										<% } %>
+
+									</div>
+								</div>
+							</div>
+						</div>
+					<% } %>
+				<% } %>
+			</div>
+		</div>
+
+		
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+		<script src="https://npmcdn.com/imagesloaded@4.1/imagesloaded.pkgd.min.js"></script>
+		<script src="https://npmcdn.com/masonry-layout@4.0/dist/masonry.pkgd.min.js"></script>
+		<script type="text/javascript" src="../javascript/allpintos_masonry.js"></script>
+		<script type="text/javascript" src="../javascript/like_a_pinto.js"></script>
+		<script type="text/javascript" src="../javascript/repost_a_pinto.js"></script>
+	</body>
+</html>
