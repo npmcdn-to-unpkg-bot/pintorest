@@ -3,10 +3,24 @@ var Pinto = require("./models/pinto");
 module.exports = function(app, passport) {
 
     app.get("/", function (req, res) {
-        res.render("index", {
-            user: req.user,
-            isAuthenticated: req.isAuthenticated()
-        });
+        if (req.isAuthenticated()) {
+            var username = req.user.local.username || req.user.twitter.username;
+        }
+
+        Pinto.find({})
+            .sort({ $natural: -1 })
+            .limit(5)
+            .exec(function (err, docs) {
+                if (err) {
+                    throw err;
+                }
+                res.render("index", {
+                    user: req.user,
+                    isAuthenticated: req.isAuthenticated(),
+                    docs: docs,
+                    username: username
+                });
+            });
     });
 
     // user's pintos and his reposts
