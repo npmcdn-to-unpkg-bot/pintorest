@@ -12,6 +12,7 @@ hr {
 	border-color:#ccc;
 }
 
+
 .jumbotron {
 	min-height: 90vh;
 	background-image:url("../images/background.jpg");
@@ -38,6 +39,16 @@ hr {
 
 footer {
 	background-color:#d6d6d6;
+}
+
+.list-unstyled li a {
+	text-decoration: none;
+	color:#333;
+}
+
+.list-unstyled li a:hover {
+	text-decoration: underline;
+	color:#333;
 }
 
 .white-space-header {
