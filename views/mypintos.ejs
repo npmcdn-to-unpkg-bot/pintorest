@@ -30,7 +30,7 @@
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
 						<li class="active"><a href="/mypintos">My Pintos</a></li>
-						<li><a href="/profile"><%= user.local.username || user.twitter.username %></a></li>
+						<li><a href="#"><%= user.local.username || user.twitter.username %></a></li>
 						<li><a href="/logout">Sign Out</a></li> 
 					</ul>
 				</div>
@@ -123,9 +123,9 @@
 											<span><span class="reposts-amount"><%= docs[i].reposts %> </span><i class="fa fa-repeat"></i></span>
 										<% } else { %>
 											<% if (docs[i].likedBy.indexOf(username) === -1) { %>
-												<span><span class="likes-amount"><%= docs[i].likes %></span> <i class="glyphicon glyphicon-chevron-up"></i></span>&nbsp;
-											<% } else { %>
 												<span><span class="likes-amount"><%= docs[i].likes %></span> <i class="likes not-liked glyphicon glyphicon-chevron-up"></i></span>&nbsp;
+											<% } else { %>
+												<span><span class="likes-amount"><%= docs[i].likes %></span> <i class="likes liked glyphicon glyphicon-chevron-up"></i></span>&nbsp;
 											<% } %>
 											<span><span class="reposts-amount"><%= docs[i].reposts %> </span><i class="reposts reposted fa fa-repeat"></i></span>
 										<% } %>
