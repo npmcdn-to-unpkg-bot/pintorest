@@ -1,6 +1,6 @@
 var Pinto = require("./models/pinto");
 
-module.exports = function(app, passport) {
+module.exports = function (app, passport) {
 
     app.get("/", function (req, res) {
         if (req.isAuthenticated()) {
@@ -47,14 +47,14 @@ module.exports = function(app, passport) {
         if (req.isAuthenticated()) {
             var username = req.user.local.username || req.user.twitter.username;
         }
-       
+
         Pinto.find({})
             .sort({ "likes": - 1 })
             .exec(function (err, docs) {
                 if (err) {
                     throw err;
                 }
-                
+
                 res.render("allpintos", {
                     user: req.user,
                     username: username,
@@ -91,9 +91,9 @@ module.exports = function(app, passport) {
     });
 
     app.get("/login", function (req, res) {
-        res.render("login", { 
-            message: req.flash("loginMessage") 
-        }); 
+        res.render("login", {
+            message: req.flash("loginMessage")
+        });
     });
 
     // twitter login
@@ -112,8 +112,8 @@ module.exports = function(app, passport) {
     }));
 
     app.get("/signup", function (req, res) {
-        res.render("signup", { 
-            message: req.flash("signupMessage") 
+        res.render("signup", {
+            message: req.flash("signupMessage")
         });
     });
 
@@ -124,15 +124,15 @@ module.exports = function(app, passport) {
 
     app.post("/signup", passport.authenticate("local-signup", {
         successRedirect : "/",
-        failureRedirect : "/signup", 
-        failureFlash : true 
+        failureRedirect : "/signup",
+        failureFlash : true
     }));
 
     // add new pinto
     app.post("/api/pintos", function (req, res) {
         var title = req.body.pintoTitle;
         var pintoUrl = req.body.pintoUrl;
-        
+
         var pinto = new Pinto;
 
         pinto.name = title;
@@ -145,7 +145,7 @@ module.exports = function(app, passport) {
             if (err) {
                 throw err;
             }
-            
+
             Pinto.find({}, {"_id": 1})
                 .sort({ $natural:-1 })
                 .limit(1)
@@ -163,7 +163,7 @@ module.exports = function(app, passport) {
         var id = req.params.id;
         var user = req.user.local.username || req.user.twitter.username;
         var method = req.body.method;
-        
+
         if (method === "add-like") {
             Pinto.findOneAndUpdate(
                 { "_id": id },
@@ -174,7 +174,7 @@ module.exports = function(app, passport) {
                 }
                 res.end();
             });
-        } 
+        }
 
         else if (method === "unlike") {
             Pinto.findOneAndUpdate(
@@ -186,7 +186,7 @@ module.exports = function(app, passport) {
                 }
                 res.end();
             });
-        } 
+        }
 
         else if (method === "add-repost") {
             Pinto.findOneAndUpdate(

@@ -45,13 +45,12 @@ $(document).ready(function () {
 
 			var url = document.getElementById("pinto-url").value;
 			var title = document.getElementById("pinto-title").value;
-			var html = "";
 
 
 			$.post("/api/pintos", { pintoTitle: title, pintoUrl: url }, function (data) {
 				var id = data[0]._id;
 				var template = _.template(
-					"<div class='grid-item col-md-4 col-lg-2' data-id='<%= id %>'>" +
+					"<div class='grid-item col-md-3 col-lg-2' data-id='<%= id %>'>" +
 						"<img src='<%= url %>'>" +
 						"<div class='wrapper'>" +
 							"<h4><%= title %></h4>" + 
